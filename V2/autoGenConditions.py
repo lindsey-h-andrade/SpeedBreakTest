@@ -1,5 +1,6 @@
 from math import sqrt # To calculate the extrusion amount per move
 import pyperclip # To copy strings to the clipboard
+import time # To use sleep and delay functions
 
 # Set max X and Y dimensions 
 XMAX = 330
@@ -16,7 +17,7 @@ cornerStarts = {
 
 def main():
 	# Define speed ranges
-	speeds = range(2000, 7000, 1000)
+	speeds = range(7000, 2000, -1000)
 
 
 
@@ -31,6 +32,18 @@ def main():
 
 	stringForCopy = ""
 
+
+	# Initialize Printer
+	printerInitialConditions = ""
+	master = open('gcodeInitMaster.txt', 'r').readlines()
+	printerInitialConditions = "".join(master)
+
+	pyperclip.copy(printerInitialConditions)
+	print('Paste printer start-up commands')
+	time.sleep(1)
+
+	uinput1 = input('Done heating T0 to 200 and bed dropped down? [y/n] ')
+
 	for i in range(numOfCorners):
 		print('--------------------------Corner Change--------------------------')
 		
@@ -39,20 +52,23 @@ def main():
 
 			for k in range(numOfSizes): 
 				stringForCopy = stringForCopy + createGcodeCopy(i, speeds[j], sizes[k])
+				# print(speeds[j])
 
 				print('Corner %d, F%d, %d' %(i, speeds[j], sizes[k]))
 
-		pyperclip.copy(stringForCopy) # Stays at 1 Corner, goes through all speed and sizes
-		BREAK = input("Did filament break? [y/n]")
 
-		if BREAK == 'y': 
-			print('Filament broken')
-			# Ask if break after each speed, go through all sizes. Start at fastest speed if possible.
-		elif BREAK == 'n': 
-			# Clear string and move onto the next speed group
-			stringForCopy == ""
 
-			
+			pyperclip.copy(stringForCopy) # Stays at 1 Corner, goes through all speed and sizes
+			BREAK = input("Did filament break? [y/n]")
+
+			if BREAK == 'y': 
+				print('Filament broken')
+				# Ask if break after each speed, go through all sizes. Start at fastest speed if possible.
+			elif BREAK == 'n': 
+				# Clear string and move onto the next speed group
+				stringForCopy == ""
+
+		stringForCopy = ""	
 			
 		
 
