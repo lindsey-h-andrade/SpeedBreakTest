@@ -1,6 +1,7 @@
 from math import sqrt # To calculate the extrusion amount per move
 import pyperclip # To copy strings to the clipboard
 import time # To use sleep and delay functions
+from datetime import datetime # To get the current date and time of a test run
 
 # Set max X and Y dimensions 
 XMAX = 330
@@ -16,20 +17,24 @@ cornerStarts = {
 }
 
 def main():
+	# Set up output file
+	resultFile = open('SpeedResults.txt', 'a')
+	resultFile.write("%s Test Run Started \n" % (datetime.now()))
+
+	testDescription = input("Test Description: ")
+	resultFile.write("%s, %s \n" %(datetime.now(), testDescription))
+
 	# Define speed ranges
-	speeds = range(7000, 2000, -1000)
-
-
+	speeds = range(6000, 1000, -1000)
 
 	# Set size range
 	sizes = range(10, 110, 10)
-
-	
 
 	numOfCorners = len(cornerStarts.keys())
 	numOfSpeeds = len(speeds)
 	numOfSizes = len(sizes)
 
+	# Initialize the string for user to copy into Eiger terminal
 	stringForCopy = ""
 
 
@@ -59,14 +64,49 @@ def main():
 
 
 			pyperclip.copy(stringForCopy) # Stays at 1 Corner, goes through all speed and sizes
-			BREAK = input("Did filament break? [y/n]")
+			BREAK = input("Did filament break? [y/n] ")
 
 			if BREAK == 'y': 
-				print('Filament broken')
+				print('Filament broken. Use M113 to stop current movement.')
+				time.sleep(5)
+
+				brokenMat = ""
+
+				MATERIAL = input("Which filament broke? [1 - Metal, 2 - Ceramic] ")
+				if MATERIAL == 1: 
+					brokenMat = "Metal"
+				else: 
+					brokenMat = "Ceramic"
+
+				stringForCopy = ""  
+
 				# Ask if break after each speed, go through all sizes. Start at fastest speed if possible.
+				for l in range(numOfSizes): 
+					stringForCopy = stringForCopy + createGcodeCopy(i, speeds[j], sizes[l])
+					pyperclip.copy(stringForCopy)
+
+					print("Corner %d, F%d, %d" %(i, speeds[j], sizes[l]))
+					print("Paste new commands.")
+					BREAK = input("Did filament break? [y/n] ")
+
+					if BREAK == 'y': 
+						resultFile.write("%s broke at: Corner %d, Speed %d, Size %d \n" % (brokenMat, i, speeds[j], sizes [l]))
+						CONTINUE = input("Continue testing more sizes at this speed? [y/n] ")
+						if CONTINUE == "n": 
+							break
+					elif BREAK == 'n':
+						if l == numOfSizes - 1: 
+							resultFile.write("%s broke at: Corner %d, Speed %d, Unknown Size" %(brokenMat, i, speeds[j]))
+						
+						stringForCopy = ""
+
 			elif BREAK == 'n': 
+				# Ask if want to continue testing lower speeds
+				CONTINUE = input('Continue testing lower speeds? [y/n] ')
+				if CONTINUE == "n": 
+					break
 				# Clear string and move onto the next speed group
-				stringForCopy == ""
+				stringForCopy = ""
 
 		stringForCopy = ""	
 			
@@ -161,6 +201,7 @@ def createGcodeCopy(corner, speed, size):
 			returnString = returnString + "G0 X%f Y%f F%f \n" % (positions[i][0], positions[i][1], speed)
 		else: 
 			returnString = returnString + "G0 X%f Y%f E%f \n" % (positions[i][0], positions[i][1], E[i])
+			# returnString = returnString + "G0 X%f Y%f \n" % (positions[i][0], positions[i][1]) # No extrusion 
 
 	# pyperclip.copy(returnString)
 	return returnString

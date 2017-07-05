@@ -1,0 +1,29 @@
+2017-07-05 16:23:16.512500 Test Run Started 
+2017-07-05 16:23:23.538000, code testing 1 
+2017-07-05 16:28:36.112300 Test Run Started 
+2017-07-05 16:28:39.797611, code testing 2 
+Broke at: Corner 0, Speed 6000, Size 20 
+2017-07-05 16:30:30.060737 Test Run Started 
+2017-07-05 16:30:33.179047, code testing 3 
+Broke at: Corner 0, Speed 6000, Size 10 
+2017-07-05 16:32:00.184730 Test Run Started 
+2017-07-05 16:32:05.170735, code testing 4 
+2017-07-05 16:32:47.879645 Test Run Started 
+2017-07-05 16:32:51.195318, code testing 5 
+Broke at: Corner 0, Speed 6000, Size 30 
+2017-07-05 16:35:14.290057 Test Run Started 
+2017-07-05 16:35:18.681300, code testing 6 
+Broke at: Corner 0, Speed 6000, Size 10 
+2017-07-05 16:36:02.550000 Test Run Started 
+2017-07-05 16:36:21.466500, Metal Only Inital testing 
+2017-07-05 16:48:57.106500 Test Run Started 
+2017-07-05 16:48:59.734000, code testing 7 
+Ceramic broke at: Corner 0, Speed 6000, Size 10 
+2017-07-05 16:49:51.393500 Test Run Started 
+2017-07-05 16:49:53.685500, code testing 8 
+Ceramic broke at: Corner 0, Speed 6000, Unknown Size2017-07-05 16:56:40.532500 Test Run Started 
+2017-07-05 16:56:49.658000, First Test with Ceramic Material Added 
+2017-07-05 17:06:21.515500 Test Run Started 
+2017-07-05 17:06:25.049500, code test 9 
+2017-07-05 17:06:38.805500 Test Run Started 
+2017-07-05 17:06:46.311500, Ceramic testing 2 with Phillip's filament attachment 
