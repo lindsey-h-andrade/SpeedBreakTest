@@ -1,0 +1,20 @@
+2017-07-06 16:43:30.257000 Test Run Started 
+2017-07-06 16:43:33.312000, code testing 
+2017-07-06 16:44:51.067000 Test Run Started 
+2017-07-06 16:44:53.784000, code testing 
+2017-07-06 16:45:53.283000 Test Run Started 
+2017-07-06 16:45:56.401000, code testing 
+2017-07-06 16:49:11.483000 Test Run Started 
+2017-07-06 16:49:16.368086, code testing 
+2017-07-07 12:05:01.121333 Test Run Started 
+2017-07-07 12:05:06.554703, code testing 
+Ceramic broke at: Corner 4, Speed 8000, Size 30 
+2017-07-07 12:10:15.788972 Test Run Started 
+2017-07-07 12:10:39.817568, Metal only. Sideways spool orientation. No extrusion.  
+2017-07-07 12:17:06.134000 Test Run Started 
+2017-07-07 12:17:30.312000, Metal only. Sideways spool orientation. Extrusion. 
+2017-07-07 12:22:49.854000 Test Run Started 
+2017-07-07 12:23:09.712000, Metal only. Spool sideways. Extrusion. Super fast.  
+2017-07-07 12:26:39.001000 Test Run Started 
+2017-07-07 12:26:58.569000, Metal only. Spool sideways. Extrusion. All speeds tested.  
+Metal broke at: Corner 0, Speed 6000, Unknown Size

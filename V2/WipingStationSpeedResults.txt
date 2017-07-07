@@ -1,0 +1,10 @@
+2017-07-07 10:43:20.419000 Test Run Started 
+2017-07-07 10:43:23.616000, code testing 
+2017-07-07 10:43:57.474000 Test Run Started 
+2017-07-07 10:43:59.920000, code testing 
+Ceramic broke at: Corner 1, Speed 9000 
+2017-07-07 10:45:03.729000 Test Run Started 
+2017-07-07 10:45:06.153000, code testing 
+Metal broke at: Corner 1, Speed 9000 
+2017-07-07 13:41:30.972000 Test Run Started 
+2017-07-07 13:41:33.793000, code test 

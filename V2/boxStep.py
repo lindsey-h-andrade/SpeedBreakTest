@@ -24,14 +24,14 @@ cornerStarts = {
 
 def main():
 	# Set up output file
-	resultFile = open('SpeedResults.txt', 'a')
+	resultFile = open('BoxStepSpeedResults.txt', 'a')
 	resultFile.write("%s Test Run Started \n" % (datetime.now()))
 
 	testDescription = input("Test Description: ")
 	resultFile.write("%s, %s \n" %(datetime.now(), testDescription))
 
 	# Define speed ranges
-	speeds = range(9000, 1000, -1000)
+	speeds = range(6000, 1000, -1000)
 
 	# Set size range
 	sizes = range(10, 110, 10)
@@ -124,68 +124,72 @@ def createGcodeCopy(corner, speed, size):
 	Xstart = cornerStarts[corner]['X']
 	Ystart = cornerStarts[corner]['Y']
 
-	xGoto = None
-	yGoto = None
-
-	if Xstart + size < XMAX and Xstart - size < 0: 
-		# print('Right edge')
-		xGoto = Xstart + size
-
-		if Ystart + size > YMAX: 
-			# print('Think it\'s at Corner 1. Actually at Corner %d' %(corner))
-			yGoto = Ystart - size  
-
-		elif Ystart - size < 0: 
-			# print('Thick it\'s at Corner 0. Actually at Corner %d' %(corner))
-			yGoto = Ystart + size
-
-	elif Xstart + size > XMAX and Xstart - size > 0: 
-		# print('Left edge')
-		xGoto = Xstart - size
-
-		if Ystart + size > YMAX: 
-			# print('Think it\'s at Corner 2. Actually at Corner %d' %(corner))
-			yGoto = Ystart - size
-
-		elif Ystart - size < 0: 
-			# print('Thick it\'s at Corner 3. Actually at Corner %d' %(corner))
-			yGoto = Ystart + size
-
-	# elif Xstart + size < XMAX and Xstart - size  > 0: 
-	else:
-		print('Middle of X')
-		# if Ystart + size < YMAX and Ystart - size > 0: 
-		xGoto = Xstart - size/2
-		yGoto = Ystart - size/2
-
-			# print('Thick it\'s at Corner 4. Actually at Corner %d' %(corner))
 
 	# Init the positions array
-	w, h = 2, size
+	w, h = 2, 4
 	positions = [[None for x in range(w)] for y in range(h)]
 
-	if xGoto != None and yGoto != None:
-		# Set initial X and Y positions
-		if xGoto < Xstart: 
-			positions[0][0] = xGoto
-		else: 
-			positions[0][0] = Xstart
+	if corner == 0: 
+		positions[0][0] = Xstart
+		positions[0][1] = Ystart
 
-		if yGoto < Ystart: 
-			positions[0][1] = yGoto
-		else: 
-			positions[0][1] = Ystart
+		positions[1][0] = Xstart
+		positions[1][1] = Ystart + size
 
-		# Populate the positions array
-		for i in range(1, size): 
-			if positions[i - 1][0] == xGoto: 
-				positions[i][0] = Xstart
-			else: 
-				positions[i][0] = xGoto
+		positions[2][0] = Xstart + size
+		positions[2][1] = Ystart + size
 
-			positions[i][1] = positions[i-1][1] + 1
+		positions[3][0] = Xstart + size
+		positions[3][1] = Ystart
+	elif corner == 1: 
+		positions[0][0] = Xstart
+		positions[0][1] = Ystart - size
 
-	# print(positions) # looks good
+		positions[1][0] = Xstart
+		positions[1][1] = Ystart
+
+		positions[2][0] = Xstart + size
+		positions[2][1] = Ystart
+
+		positions[3][0] = Xstart + size
+		positions[3][1] = Ystart - size
+	elif corner == 2: 
+		positions[0][0] = Xstart - size
+		positions[0][1] = Ystart - size
+
+		positions[1][0] = Xstart - size
+		positions[1][1] = Ystart
+
+		positions[2][0] = Xstart 
+		positions[2][1] = Ystart
+
+		positions[3][0] = Xstart
+		positions[3][1] = Ystart - size
+	elif corner == 3: 
+		positions[0][0] = Xstart - size
+		positions[0][1] = Ystart
+
+		positions[1][0] = Xstart - size
+		positions[1][1] = Ystart + size
+
+		positions[2][0] = Xstart 
+		positions[2][1] = Ystart + size
+
+		positions[3][0] = Xstart
+		positions[3][1] = Ystart 
+	elif corner == 4: 
+		positions[0][0] = Xstart - size/2
+		positions[0][1] = Ystart - size/2
+
+		positions[1][0] = Xstart - size/2
+		positions[1][1] = Ystart + size/2
+
+		positions[2][0] = Xstart + size/2
+		positions[2][1] = Ystart + size
+
+		positions[3][0] = Xstart + size/2
+		positions[3][1] = Ystart - size/2
+
 
 	# calculate E values for each move
 	epmm = 0.03379586445901975 # extrusion per mm of movement
@@ -206,13 +210,13 @@ def createGcodeCopy(corner, speed, size):
 		E[i] = dist * epmm
 
 	returnString = ""
-	for i in range(size): 
+	for i in range(h): 
 		returnString = returnString + "G92 E0\n"
 		if E[i] == 0: 
 			returnString = returnString + "G0 X%f Y%f F%f \n" % (positions[i][0], positions[i][1], speed)
 		else: 
-			# returnString = returnString + "G0 X%f Y%f E%f \n" % (positions[i][0], positions[i][1], E[i])
-			returnString = returnString + "G0 X%f Y%f \n" % (positions[i][0], positions[i][1]) # No extrusion 
+			returnString = returnString + "G0 X%f Y%f E%f \n" % (positions[i][0], positions[i][1], E[i])
+			# returnString = returnString + "G0 X%f Y%f \n" % (positions[i][0], positions[i][1]) # No extrusion 
 
 	# pyperclip.copy(returnString)
 	return returnString

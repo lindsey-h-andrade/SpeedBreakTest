@@ -83,8 +83,8 @@ def main():
 			if i == 0: 
 				string = "G92 E0 \n G0 X%f Y%f F%f \n" % (positions[i][0], positions[i][1], headspeed)
 			else: 
-				string = "G92 E0 \n G0 X%f Y%f E%f \n" % (positions[i][0], positions[i][1], E[i])
-				# string = "G92 E0 \n G0 X%f Y%f E%f \n" % (positions[i][0], positions[i][1], 0) # no extrude
+				# string = "G92 E0 \n G0 X%f Y%f E%f \n" % (positions[i][0], positions[i][1], E[i])
+				string = "G92 E0 \n G0 X%f Y%f E%f \n" % (positions[i][0], positions[i][1], 0) # no extrude
 			
 			arrayForCopy.append(string)
 
